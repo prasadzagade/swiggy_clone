@@ -24,8 +24,8 @@ post_build:
     - echo "Sending email notification with build status..."
     - |
       aws ses send-email \
-        --from "madithati123@gmail.com" \
-        --to "madithati123@gmail.com" \
+        --from "prasadzagade305@gmail.com" \
+        --to "prasadzagade305@gmail.com" \
         --subject "CodeBuild Status: $CODEBUILD_BUILD_ID" \
         --text "Build status: $CODEBUILD_BUILD_STATUS" \
         --region "ap-south-1"  # Update if using a different AWS region
