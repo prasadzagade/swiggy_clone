@@ -1,47 +1,34 @@
+---
 version: 0.2
-
 env:
   parameter-store:
     DOCKER_REGISTRY_USERNAME: /cicd/docker-credentials/username
     DOCKER_REGISTRY_PASSWORD: /cicd/docker-credentials/password
     DOCKER_REGISTRY_URL: /cicd/docker-registry/url
     SONAR_TOKEN: /cicd/sonar/sonar-token
-
 phases:
   install:
     runtime-versions:
       python: 3.11
       java: corretto17
-
   pre_build:
     commands:
       - echo "Installing dependencies..."
       - echo "Performing Trivy file scan before building the image..."
-      # Uncomment the below lines if needed for scanning
-      # - wget https://github.com/aquasecurity/trivy/releases/download/v0.19.2/trivy_0.19.2_Linux-64bit.tar.gz
-      # - tar zxvf trivy_0.19.2_Linux-64bit.tar.gz
-      # - export PATH=$PATH:$PWD
-      # - trivy filesystem --exit-code 0 --no-progress . >> trivyfilescan.txt
-
   build:
     commands:
       - echo "Running tests..."
       - echo "Building Docker image..."
-      # Uncomment if Docker build and push are required
-      # - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin "$DOCKER_REGISTRY_URL"
-      # - docker build -t "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/swiggy:latest" .
-      # - docker push "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/swiggy:latest"
-
 post_build:
   commands:
     - echo "Sending email notification with build status..."
-    - aws ses send-email \
+    - |
+      aws ses send-email \
         --from "madithati123@gmail.com" \
         --to "madithati123@gmail.com" \
         --subject "CodeBuild Status: $CODEBUILD_BUILD_ID" \
         --text "Build status: $CODEBUILD_BUILD_STATUS" \
         --region "ap-south-1"  # Update if using a different AWS region
-
 artifacts:
   files:
     - appspec.yaml
