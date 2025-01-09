@@ -17,29 +17,18 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - echo "Performing Trivy file scan before building the image..."
-      # Uncomment and modify below lines as needed
-      # - wget https://github.com/aquasecurity/trivy/releases/download/v0.19.2/trivy_0.19.2_Linux-64bit.tar.gz
-      # - tar zxvf trivy_0.19.2_Linux-64bit.tar.gz
-      # - export PATH=$PATH:$PWD
-      # - trivy filesystem --exit-code 0 --no-progress . >> trivyfilescan.txt
 
   build:
     commands:
       - echo "Running tests..."
       - echo "Building Docker image..."
-      # Uncomment and modify below lines as needed
-      # - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin "$DOCKER_REGISTRY_URL"
-      # - docker build -t "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/swiggy:latest" .
-      # - docker push "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/swiggy:latest"
 
   post_build:
     commands:
-      - |
-        aws ses send-email \
+      - aws ses send-email \
           --from "prasadzagade305@gmail.com" \
-          --to "prasadzagade305@gmail.com" \
-          --subject "CodeBuild Status: $CODEBUILD_BUILD_ID" \
-          --text "Build status: $CODEBUILD_BUILD_STATUS" \
+          --destination "ToAddresses=prasadzagade305@gmail.com" \
+          --message "Subject={Data=CodeBuild Status: $CODEBUILD_BUILD_ID},Body={Text={Data=Build status: $CODEBUILD_BUILD_STATUS}}" \
           --region "ap-south-1"
 
 artifacts:
