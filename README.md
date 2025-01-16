@@ -531,13 +531,4 @@ Observe that the title changed as expected.
 
 4. Delete Sonar-Server EC2 Instance.
 
-## Hit the Star! ⭐
 
-**If you are planning to use this repository for learning, please give it a star. Thanks!**
-
-### Author by
-
-![](https://imgur.com/2j6Aoyl.png)
-
-> [!Note]
-> Join Our [Telegram Community](https:t.me/prodevopsguy) || [Follow me](https://github.com/NotHarshhaa) for more DevOps Content
